@@ -11,7 +11,7 @@ def welcome():
         print(f'Hi {username} and welcome to the World of Games: The Epic Journey')
 
 
-def start_play(user_input=input()):
+def start_play():
     games = get_games()
     print('Please choose a game to play:')
     for game in games:
