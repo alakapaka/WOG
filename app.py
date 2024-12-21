@@ -1,40 +1,33 @@
 import os
 
 
-def welcome():
-    print('Please insert your name:')
-    username = input()
-    if len(username) <= 1:
-        print(" !- Name must be longer than one letter. -!")
-        welcome()
-    else:
-        print(f'Hi {username} and welcome to the World of Games: The Epic Journey')
+def get_int_user_decision(opening_msg, limit = int()):
+    while True:
+        print(opening_msg)
+        decision = input()
+        if not decision.isnumeric():
+            print(f'Please insert a valid * NUMBER * between 1 to {limit}')
+            continue
+        decision = int(decision)
+        if limit < decision or decision == 0:
+            print(f'Please insert a valid number between 1 to {limit}')
+            continue
+        break
+    return decision
 
 
-def start_play():
-    games = get_games()
-    print('Please choose a game to play:')
-    for game in games:
-        print(f'{games.index(game) + 1}. '
-              f'{games[games.index(game)]["game_name"]} - {games[games.index(game)]["game_desc"]}')
-    game_decision = get_int_user_decision(len(games))
-    print(f'Nice one! {games[int(game_decision) - 1]["game_name"]} is a great game!')
-    print(f'Please set difficulty level from 1 to {games[int(game_decision) - 1]["game_difficulty"].stop - 1}:')
-    difficulty = get_int_user_decision(int(games[int(game_decision) - 1]["game_difficulty"].stop - 1))
-    print(f'The difficulty level you choose is: {difficulty}')
-    print(f"\n Oo. That's it for now! See you on the next stage of the project! .oO")
-
-
-def get_int_user_decision(limit):
-    decision = input()
-    if not decision.isnumeric():
-        print(f'Please insert a valid * NUMBER * between 1 to {limit}')
-        return get_int_user_decision(limit)
-    elif int(limit) < int(decision) or int(decision) == 0:
-        print(f'Please insert a valid number between 1 to {limit}')
-        return get_int_user_decision(limit)
-    else:
-        return decision
+def get_str_user_decision(opening_msg, min_characters, str_only=False):
+    while True:
+        print(opening_msg)
+        decision = input()
+        if len(decision.strip()) <= 1:
+            print(f" !- Name must be longer than {min_characters} character(s). -!")
+            continue
+        if str_only and any(map(str.isdigit, decision)):
+            print(" !- Name must not contain digits -!")
+            continue
+        break
+    return decision
 
 
 def create_game_option(game_name, game_desc, difficulty_lvl_max):
@@ -59,3 +52,13 @@ def get_games():
                            5
                            )
     ]
+
+
+def print_games(games):
+    opening_msg = 'Please choose a game to play:'
+    games_txt = ''
+    for game in games:
+        games_txt = games_txt + (f'{games.index(game) + 1}. '
+                                 f'{games[games.index(game)]["game_name"]} - '
+                                 f'{games[games.index(game)]["game_desc"]}\n')
+    return opening_msg + '\n' + games_txt
